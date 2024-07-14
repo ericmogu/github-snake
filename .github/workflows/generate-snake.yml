@@ -14,10 +14,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Generate Snake Animation
-        uses: Platane/snk@master
-        with:
-          github_token: ${{ secrets.PAT }}  # Usar el PAT en lugar del GITHUB_TOKEN
-          output: dist/snake.svg
+        run: |
+          mkdir -p dist
+          curl -o dist/snake.svg https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake.svg
 
       - name: Create output folder
         run: mkdir -p output
