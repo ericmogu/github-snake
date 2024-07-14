@@ -14,9 +14,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Generate Snake Animation
-        run: |
-          mkdir -p dist
-          curl -o dist/snake.svg https://github.com/Platane/snk/raw/output/snake.svg
+        uses: Platane/snk@master
+        with:
+          github_token: ${{ secrets.PAT }}  # Usar el PAT en lugar del GITHUB_TOKEN
+          output: dist/snake.svg
 
       - name: Create output folder
         run: mkdir -p output
@@ -32,4 +33,4 @@ jobs:
           git commit -m "Generate snake.svg"
           git push
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}  # Usar el PAT en lugar del GITHUB_TOKEN
