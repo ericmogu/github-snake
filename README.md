@@ -1,2 +1,1 @@
-# github-snake
-Repository to configure snake actions
+![Snake Animation](./output/snake.svg)
