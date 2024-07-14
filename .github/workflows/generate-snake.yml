@@ -1,0 +1,36 @@
+name: Generate Snake
+
+on:
+  schedule: # Ejecuta una vez al día a medianoche
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Generate Snake Animation
+        uses: Platane/snk@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          output: dist/snake.svg
+
+      - name: Create output folder
+        run: mkdir -p output
+
+      - name: Move Snake Animation to output folder
+        run: mv dist/snake.svg output/snake.svg
+
+      - name: Push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add output/snake.svg
+          git commit -m "Generate snake.svg"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
