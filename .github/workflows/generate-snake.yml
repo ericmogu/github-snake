@@ -13,10 +13,13 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v2
 
+      - name: Create dist folder
+        run: mkdir -p dist
+
       - name: Generate Snake Animation
         uses: Platane/snk@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}  # Usar el PAT en lugar del GITHUB_TOKEN
           output: dist/snake.svg
 
       - name: Create output folder
@@ -25,8 +28,13 @@ jobs:
       - name: Move Snake Animation to output folder
         run: mv dist/snake.svg output/snake.svg
 
-      - name: Upload the animation
-        uses: actions/upload-artifact@v2
-        with:
-          name: snake
-          path: output/snake.svg
+      - name: Push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add output/snake.svg
+          git commit -m "Generate snake.svg"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}  # Usar el PAT en lugar del GITHUB_TOKEN
+
